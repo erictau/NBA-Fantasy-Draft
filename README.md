@@ -1,25 +1,12 @@
-# MERN-Stack Infrastructure
+# NBA Fantasy Draft
 
-Clone this repo to provide the starter code for a comprehensive MERN-Stack project including token-based authentication.
+## Planning Material
 
-## Project Start Checklist
+#### ERD
+https://lucid.app/lucidchart/fe8fbce1-1ed3-4c3c-8a6b-a7b14c615739/edit?invitationId=inv_87e5d2f6-cf38-41d4-8a7d-d8332d1c8fdb&page=0_0#
 
-- [ ] Run `npm install` to download all needed NPM packages
-- [ ] Run `npm run build` to generate a build folder for your project
-- [ ] Create a `.env` file with these variables:
+#### Wireframes
+https://lucid.app/lucidchart/fe8fbce1-1ed3-4c3c-8a6b-a7b14c615739/edit?invitationId=inv_87e5d2f6-cf38-41d4-8a7d-d8332d1c8fdb&page=1reFkgoDHowA#
 
-```
-DATABASE_URL=YOUR_DATABASE_GOESHERE
-SECRET=YOUR_SECRET_HERE
-```
-
-- [ ] React server running on localhost:3000 after running `npm start`
-- [ ] Node.js backend running on localhost:3001 after running `nodemon server.js`
-- [ ] Set up this project's Github page
-  - [ ] rename this folder with the `mv` command: `mv project-4-starter MY_PROJECT_NAME`
-  - [ ] run `rm -rf .git` in the root of this repo to remove any trace of where you downloaded this
-  - [ ] run `git init` to remake this starter into your own git repo
-  - [ ] go to `github.com` and create a new online repo for you to upload to
-  - [ ] make a commit on your local computer and then push to github
-- [ ] install a component library or place a CSS CDN in your `public/index.html`
-- [ ] Start coding!
+#### Trello
+https://trello.com/b/lcM3GnQp/project-4-nba-fantasy-draft
