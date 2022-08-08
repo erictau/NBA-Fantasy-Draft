@@ -44,7 +44,8 @@ export default function SignUpForm({ setUser }) {
 
   return (
     <div>
-      <div className="container">
+      <div className="container w-50 border">
+        <h1>Sign Up</h1>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Name</Form.Label>

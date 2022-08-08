@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { getUser } from "../../utilities/users-service";
 import AuthPage from "../AuthPage/AuthPage";
 import NavBar from "../../components/NavBar/NavBar";
+import Dashboard from "../Dashboard/Dashboard"
 import * as playersAPI from "../../utilities/players-api"
 
 export default function App() {
@@ -15,7 +16,10 @@ export default function App() {
       {user ? (
         <>
           <NavBar user={user} setUser={setUser} />
-          <Routes></Routes>
+          <Routes>
+            <Route path="/" element={<Dashboard />}/>
+            <Route path="/draft" />
+          </Routes>
         </>
       ) : (
         <AuthPage setUser={setUser} />

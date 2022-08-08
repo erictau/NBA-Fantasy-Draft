@@ -5,6 +5,7 @@ export default function AuthPage({ setUser }) {
     return (
         <main>
             <SignUpForm setUser={setUser} />
+            <h3 className="text-center mb-5">OR</h3>
             <LoginForm setUser={setUser} />
         </main>
     )
