@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 // React Bootstrap
 import Button from 'react-bootstrap/Button'
 // Custom Components
@@ -24,7 +25,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <Button>Create New Draft</Button>
+            <Link to='/drafts/new' className="btn btn-primary">Create New Draft</Link>
             <div className="container">
                 <DraftList drafts={drafts}/>
             </div>

@@ -2,6 +2,13 @@ import sendRequest from "./send-request";
 const BASE_URL = '/api/drafts'
 
 export async function getAllDrafts() {
-    sendRequest(BASE_URL)
-    return []
+    return await sendRequest(BASE_URL)
+}
+
+export async function createDraft(draftForm) {
+    return await sendRequest(`${BASE_URL}/create`, 'POST', draftForm)
+}
+
+export async function getDraftById(draftId) {
+    
 }

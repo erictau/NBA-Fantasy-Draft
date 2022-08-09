@@ -47,11 +47,8 @@ export default function SignUpForm({ setUser }) {
       <div className="container w-50 border">
         <h1>Sign Up</h1>
         <Form autoComplete="off" onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
-          </Form.Group>
-
+          <Form.Label>Name</Form.Label>
+          <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
           <Form.Label>Email</Form.Label>
           <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
           <Form.Label>Password</Form.Label>
