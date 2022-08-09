@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import * as draftsAPI from '../../utilities/drafts-api'
+import PlayerList from '../../components/PlayerList//PlayerList'
+import PicksList from '../../components/PicksList//PicksList'
+
 
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -6,21 +11,31 @@ import Button from 'react-bootstrap/Button'
 
 export default function DraftPage() {
     // State
-    const [draftData, setDraftData] = useState(null)
+    const [draftData, setDraftData] = useState({})
 
+    // Params
+    const { draftId } = useParams();
 
     // Use Effect
     useEffect(function() {
-        async function getDraftById() {
-
-        }    
+        async function getCurrentDraft() {
+            const draft = await draftsAPI.getDraftById(draftId)
+            setDraftData(draft)
+        } 
+        getCurrentDraft()   
     }, [])
 
     return (
         <>
-            <Form> 
-                <h1>Test</h1>
-            </Form>
+            <h1>Draft: {draftData.name}</h1>
+            <div className="row">
+                <div className="col-6">
+                    <PicksList />
+                </div>
+                <div className="col-6">
+                    <PlayerList />
+                </div>
+            </div>
         </>
     )
 }

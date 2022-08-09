@@ -3,6 +3,7 @@ const Draft = require('../../models/draft')
 module.exports = {
     index,
     create,
+    show
 }
 
 async function index(req, res) {
@@ -20,6 +21,19 @@ async function create(req, res) {
         scoringSystem
     }
     let newDraft = await Draft.create(draftForm)
-    console.log(newDraft)
     return res.json(newDraft)
+}
+
+async function show(req, res) {
+    try {
+        const draft = await Draft.findById(req.params.draftId)
+        if (draft && draft.participants.equals(req.user._id)) {
+            res.json(draft)
+        } else {
+            throw new Error('Cannot access draft page.')
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(400).json(err)
+    }
 }

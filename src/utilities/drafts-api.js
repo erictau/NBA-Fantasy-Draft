@@ -6,9 +6,9 @@ export async function getAllDrafts() {
 }
 
 export async function createDraft(draftForm) {
-    return await sendRequest(`${BASE_URL}/create`, 'POST', draftForm)
+    return await sendRequest(BASE_URL, 'POST', draftForm)
 }
 
 export async function getDraftById(draftId) {
-    
+    return await sendRequest(`${BASE_URL}/${draftId}`)
 }
