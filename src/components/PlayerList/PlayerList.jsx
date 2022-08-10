@@ -1,14 +1,14 @@
 import * as playersAPI from '../../utilities/players-api'
+import PlayerCard from '../PlayerCard/PlayerCard'
 import { useState } from 'react'
-import playersThisSeason from '../../seed/playersThisSeason'
 
-export default function PlayerList() {
+export default function PlayerList({ remainingPlayers }) {
 
 
     return (
         <div className="container">
             <h1>Available Players</h1>
-            
+            {remainingPlayers.map((player, idx) => <PlayerCard player={player} key={idx} />)}
         </div>
     )
 }

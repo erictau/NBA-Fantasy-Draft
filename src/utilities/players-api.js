@@ -3,6 +3,25 @@ const STATS_URL = 'https://www.balldontlie.io/api/v1/season_averages'
 const SEASON = '2021'
 const PLAYERS_URL = 'https://www.balldontlie.io/api/v1/players'
 
+
+export async function getPlayersById(idArray) {
+    // Expects idArray to be an array of player ids
+    let seasonQueryString = `?season=${SEASON}`
+    let playerQueryString = idArray.reduce((total, currId) => total + `&player_ids[]=${currId}`, '')
+    let playersArray = await sendRequest(`${STATS_URL}${seasonQueryString}${playerQueryString}`)
+    playersArray.data.forEach(async function(player) {
+        let playerInfo = await sendRequest(`${PLAYERS_URL}/${player.player_id}`)
+        player.first_name = playerInfo.first_name
+        player.last_name = playerInfo.last_name
+        player.position = playerInfo.position
+        player.team = playerInfo.team.abbreviation
+    })
+    return playersArray.data
+}
+
+
+
+/* Functions below this point were created to pre-process the API and extract data to be used in the project. This helps avoid the need to perform large fetch requests to the 'Ball Don't Lie API' which could easily result in 429 responses (Bad Request) due to overloading the API server. */
 // Function was used to grab all player ID's to seed the database with 2021 data. 
 export async function getAllPlayerIds() {
     // Per the API, there are 38 total pages of 100 players each. We will loop through and obtain every player. Loop through in increments of less than 10 pages at a time to avoid overloading the fetch request to the API.
@@ -12,14 +31,6 @@ export async function getAllPlayerIds() {
         allPlayers = allPlayers.concat(players)
     }
     return allPlayers.map(player => player.id)
-}
-
-export async function getPlayersById(id) {
-    let seasonQueryString = `?season=${SEASON}`
-    let playerQueryString = id.reduce((total, currId) => total + `&player_ids[]=${currId}`, '')
-    console.log(`${STATS_URL}${seasonQueryString}${playerQueryString}`)
-    let playersArray = await sendRequest(`${STATS_URL}${seasonQueryString}${playerQueryString}`)
-    return playersArray
 }
 
 // Used to update the "playersThisSeason" array of IDs. 
