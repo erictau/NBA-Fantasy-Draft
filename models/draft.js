@@ -8,9 +8,8 @@ const scoringSchema = new Schema({
     reb: Number,
     stl: Number,
     blk: Number,
-    to: Number,
+    turnover: Number,
     pf: Number,
-    fgmissed: Number,
 })
 
 const draftPickSchema = new Schema({
@@ -20,7 +19,17 @@ const draftPickSchema = new Schema({
     },
     pickNo: Number,
     playerId: Number,
-    playerName: String
+    first_name: String,
+    last_name: String,
+    position: String,
+    pts: Number,
+    ast: Number,
+    reb: Number,
+    stl: Number,
+    blk: Number,
+    turnover: Number,
+    pf: Number,
+    projectedScore: Number
 })
 
 const draftSchema = new Schema({
@@ -41,7 +50,6 @@ const draftSchema = new Schema({
             blk: 2.5,
             to: -1.5,
             pf: -1.5,
-            fgmissed: -0.5
         }
     },
     draftPicks: [draftPickSchema],
@@ -51,9 +59,5 @@ const draftSchema = new Schema({
     toJSON: {virtuals: true}
 })
 
-// Virtuals. Calculate the draft score based on player stats and scoringSchema.
-draftSchema.virtual('draftScore').get(function() {
-    return 'Test'
-})
 
 module.exports = mongoose.model('Draft', draftSchema)

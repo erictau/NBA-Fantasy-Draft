@@ -22,7 +22,6 @@ export default function DraftPage() {
     const [playerPage, setPlayerPage] = useState(1)
     const [usersPlayersIds, setUsersPlayersIds] = useState([])
     const [usersPlayers, setUsersPlayers] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
 
     // Params
     const { draftId } = useParams();
@@ -34,17 +33,32 @@ export default function DraftPage() {
             await getCurrentDraft()
             getRemainingPlayersIds()
             getUsersPlayersIds()
-            await fetchRemainingPlayers()
         }
         startup()
     }, [])
+
+    useEffect(function() {
+        async function run() {
+            await fetchRemainingPlayers()
+        }
+        run()
+    }, [draftData, playerPage])
 
     // Handler Functions
 
 
     // Helper Functions
     async function calculateProjectedScore(player) {
-        console.log(await draftData.scoringSystem)
+        let scoring = await draftData.scoringSystem
+        let totalScore = 
+        player.pts * scoring.pts +
+        player.ast * scoring.ast + 
+        player.reb * scoring.reb + 
+        player.stl * scoring.stl +
+        player.blk * scoring.blk + 
+        player.turnover * scoring.to +
+        player.pf * scoring.pf
+        return totalScore
     }
 
     async function getCurrentDraft() {
@@ -74,36 +88,25 @@ export default function DraftPage() {
         let start = (playerPage - 1) * numPlayersRendered
         let end = start + numPlayersRendered
         const tempRemainingPlayers = await playersAPI.getPlayersById(remainingPlayersIds.slice(start, end))
-        tempRemainingPlayers.forEach(player => { player.projectedScore = calculateProjectedScore(player) })
+        tempRemainingPlayers.forEach(async function(player) { player.projectedScore = await calculateProjectedScore(player) })
         setRemainingPlayers(tempRemainingPlayers)
     }
 
 
     // Render 
-    if (!isLoading) {
-        return (
-            <>
+    return (
+        <>
             <h1>Draft: {draftData.name}</h1>
             <div className="row">
                 <div className="col-6">
-                    <PicksList />
-                    {draftData.draftPicks.join(', ')}
+                    <h1>Your Picks</h1>
+                    <PicksList draftPicks={draftData.draftPicks}/>
                 </div>
                 <div className="col-6">
-                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} />
+                    <h1>Available Players</h1>
+                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} />
                 </div>
             </div>
         </>
     )
-    } 
-    else {
-        // Returns a loading screen, which is just 3 blinking dots.
-        return (
-            <div className="loading d-flex justify-content-center align-items-center m-auto">
-                <Spinner className="m-3" animation="grow" />
-                <Spinner className="m-3" animation="grow" />
-                <Spinner className="m-3" animation="grow" />
-            </div>
-        )
-    }
 }

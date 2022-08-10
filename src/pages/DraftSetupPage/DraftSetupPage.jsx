@@ -61,8 +61,6 @@ export default function DraftSetupPage() {
                 <Form.Control type='number' name='to' value={draftForm.to} onChange={handleChange} />
                 <Form.Label>Scoring System - Fouls</Form.Label>
                 <Form.Control type='number' name='pf' value={draftForm.pf} onChange={handleChange} />
-                <Form.Label>Scoring System - Missed FGs</Form.Label>
-                <Form.Control type='number' name='fgMissed' value={draftForm.fgMissed} onChange={handleChange} />
 
                 <Button type="submit">Submit</Button>
             </Form>
