@@ -19,9 +19,10 @@ export default function DraftPage() {
     const [remainingPlayersIds, setRemainingPlayersIds] = useState(playersThisSeason)
     const [remainingPlayers, setRemainingPlayers] = useState([])
     const [numPlayersRendered, setNumPlayersRendered] = useState(5)
+    const [playerPage, setPlayerPage] = useState(1)
     const [usersPlayersIds, setUsersPlayersIds] = useState([])
     const [usersPlayers, setUsersPlayers] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     // Params
     const { draftId } = useParams();
@@ -30,48 +31,55 @@ export default function DraftPage() {
     useEffect(function() {
         // Retrieves the draft object from the database.
         async function startup() {
-            async function getCurrentDraft() {
-                const draft = await draftsAPI.getDraftById(draftId)
-                setDraftData(draft)
-            } 
             await getCurrentDraft()
-            
-            // Sets the state variable 'remainingPlayersIds' based on all players minus players who've been drafted already. Saves Ids only. 
-            function getRemainingPlayersIds() {
-                let tempRemainingPlayersIds = [...remainingPlayersIds]
-                draftData.draftPicks.forEach(pick => {
-                    let index = tempRemainingPlayersIds.findIndex(remaining => remaining === pick.playerId)
-                    tempRemainingPlayersIds.splice(index, 1)
-                })
-                setRemainingPlayersIds(tempRemainingPlayersIds)
-            }
-            await getRemainingPlayersIds()
-
-            // Grabs the users players based on which players have been drafted.
-            // This function currently is set up assuming a single user can participate in a draft. Must refactor to allow multiple users in the future.
-            function getUsersPlayersIds() {
-                let playersIdList = draftData.draftPicks.map(pick => pick.playerId)
-                setUsersPlayersIds(playersIdList)
-            }
-            await getUsersPlayersIds()
-
-            // Returns an array of players including stats and names. 
-            async function fetchRemainingPlayers() {
-                const tempRemainingPlayers = await playersAPI.getPlayersById(remainingPlayersIds.slice(0, numPlayersRendered))
-                tempRemainingPlayers.forEach(player => { player.projectedScore = calculateProjectedScore(player) })
-                setRemainingPlayers(tempRemainingPlayers)
-            }
+            getRemainingPlayersIds()
+            getUsersPlayersIds()
             await fetchRemainingPlayers()
-            setIsLoading(false)
         }
         startup()
     }, [])
+
+    // Handler Functions
+
 
     // Helper Functions
     async function calculateProjectedScore(player) {
         console.log(await draftData.scoringSystem)
     }
 
+    async function getCurrentDraft() {
+        const draft = await draftsAPI.getDraftById(draftId)
+        setDraftData(draft)
+    } 
+
+    // Sets the state variable 'remainingPlayersIds' based on all players minus players who've been drafted already. Saves Ids only. 
+    function getRemainingPlayersIds() {
+        let tempRemainingPlayersIds = [...remainingPlayersIds]
+        draftData.draftPicks.forEach(pick => {
+            let index = tempRemainingPlayersIds.findIndex(remaining => remaining === pick.playerId)
+            tempRemainingPlayersIds.splice(index, 1)
+        })
+        setRemainingPlayersIds(tempRemainingPlayersIds)
+    }
+
+    // Grabs the users players based on which players have been drafted.
+    // This function currently is set up assuming a single user can participate in a draft. Must refactor to allow multiple users in the future.
+    function getUsersPlayersIds() {
+        let playersIdList = draftData.draftPicks.map(pick => pick.playerId)
+        setUsersPlayersIds(playersIdList)
+    }
+
+    // Returns an array of players including stats and names. 
+    async function fetchRemainingPlayers() {
+        let start = (playerPage - 1) * numPlayersRendered
+        let end = start + numPlayersRendered
+        const tempRemainingPlayers = await playersAPI.getPlayersById(remainingPlayersIds.slice(start, end))
+        tempRemainingPlayers.forEach(player => { player.projectedScore = calculateProjectedScore(player) })
+        setRemainingPlayers(tempRemainingPlayers)
+    }
+
+
+    // Render 
     if (!isLoading) {
         return (
             <>
@@ -82,7 +90,7 @@ export default function DraftPage() {
                     {draftData.draftPicks.join(', ')}
                 </div>
                 <div className="col-6">
-                    <PlayerList remainingPlayers={remainingPlayers} />
+                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} />
                 </div>
             </div>
         </>
