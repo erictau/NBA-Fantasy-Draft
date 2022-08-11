@@ -14,9 +14,8 @@ export default function DraftSetupPage() {
         reb: null,
         stl: null,
         blk: null,
-        to: null,
+        turnover: null,
         pf: null,
-        fgMissed: null
     })
     
     // Navigate
@@ -36,7 +35,6 @@ export default function DraftSetupPage() {
         // Send API request
         const newDraft = await draftsAPI.createDraft(draftForm)
         // Navigate to the draft page. Need newly created draft's id
-        console.log(newDraft)
         navigate(`/drafts/${newDraft.id}`)
     }
 
@@ -58,7 +56,7 @@ export default function DraftSetupPage() {
                 <Form.Label>Scoring System - Blk</Form.Label>
                 <Form.Control type='number' name='blk' value={draftForm.blk} onChange={handleChange} />
                 <Form.Label>Scoring System - TO</Form.Label>
-                <Form.Control type='number' name='to' value={draftForm.to} onChange={handleChange} />
+                <Form.Control type='number' name='turnover' value={draftForm.to} onChange={handleChange} />
                 <Form.Label>Scoring System - Fouls</Form.Label>
                 <Form.Control type='number' name='pf' value={draftForm.pf} onChange={handleChange} />
 

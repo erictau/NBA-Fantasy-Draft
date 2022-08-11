@@ -12,3 +12,7 @@ export async function createDraft(draftForm) {
 export async function getDraftById(draftId) {
     return await sendRequest(`${BASE_URL}/${draftId}`)
 }
+
+export async function draftPlayer(draftId, player) {
+    return await sendRequest(`${BASE_URL}/${draftId}/select-player`, 'POST', player)
+}

@@ -3,9 +3,12 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
 
-export default function PlayerCard({ player }) {
+export default function PlayerCard({ player, draftPlayer }) {
 
-    
+    function handleDraft() {
+        draftPlayer(player)
+    }
+
     return (
         <Card>
         <Card.Title>{player.first_name} {player.last_name} ({player.team})</Card.Title>
@@ -26,7 +29,7 @@ export default function PlayerCard({ player }) {
             <div className="col-6 p-3 d-flex flex-column">
                 <b>Projected Score: {player.projectedScore.toFixed(2)}</b>
                 <div>
-                    <Button variant="primary">Draft</Button>
+                    { !player.user && <Button onClick={handleDraft} variant="primary">Draft</Button>}
                 </div>
             </div>
             </div>

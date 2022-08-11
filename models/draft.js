@@ -17,11 +17,11 @@ const draftPickSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    pickNo: Number,
     playerId: Number,
     first_name: String,
     last_name: String,
     position: String,
+    team: String,
     pts: Number,
     ast: Number,
     reb: Number,

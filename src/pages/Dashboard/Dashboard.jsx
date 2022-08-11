@@ -17,7 +17,6 @@ export default function Dashboard() {
     useEffect(function() {
         async function getDrafts() {
             let results = await draftsAPI.getAllDrafts()
-            console.log(results)
             setDrafts(results)
         }
         getDrafts()
