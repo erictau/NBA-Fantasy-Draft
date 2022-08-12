@@ -58,7 +58,9 @@ export default function DraftPage({ user }) {
     }, [remainingPlayersIds])
 
     useEffect(function() {
-        checkDraftCompletion()
+        if (draftData.draftPicks.length) {
+            checkDraftCompletion()
+        }
     }, [draftData])
 
     // Helper Functions
@@ -67,7 +69,7 @@ export default function DraftPage({ user }) {
     }
 
     function checkDraftCompletion() {
-        if (draftData.length && draftData.draftPicks.length >= draftData.numPlayersPerUser * draftData.participants.length) {
+        if (draftData.draftPicks.length >= draftData.numPlayersPerUser * draftData.participants.length) {
             setDraftComplete(true)
         }
     }
@@ -133,7 +135,7 @@ export default function DraftPage({ user }) {
     return (
         <>
         <h1>Draft: {draftData.name}</h1>        
-        {draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2>}
+        {!draftComplete ? draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2> : <h2>Draft is Complete!</h2>}
         {draftData.participants.length && <h2>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h2>}
         <div className="row">
             <div className="col-6">
