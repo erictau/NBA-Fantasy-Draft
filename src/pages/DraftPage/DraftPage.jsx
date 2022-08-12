@@ -12,7 +12,13 @@ let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
 
 export default function DraftPage({ user }) {
     // State
-    const [draftData, setDraftData] = useState({name: '', draftPicks: []})
+    const [draftData, setDraftData] = useState({
+        name: '', 
+        draftPicks: [],
+        participants: [], 
+        scoringSystem: {},
+        numPlayersPerUser: 0
+    })
     const [remainingPlayersIds, setRemainingPlayersIds] = useState(null)
     const [remainingPlayers, setRemainingPlayers] = useState([])
     const [numPlayersRendered, setNumPlayersRendered] = useState(5)
@@ -35,14 +41,18 @@ export default function DraftPage({ user }) {
     useEffect(function() {
         async function run() {
             getRemainingPlayersIds()
-            updateParticipantsIdx()
+            if (draftData.participants.length) {
+                updateParticipantsIdx()
+            }
         }
         run()
     }, [draftData, playerPage])
     
     useEffect(function() {
-        async function run() {            
-            await fetchRemainingPlayers()
+        async function run() {    
+            if (remainingPlayersIds) {
+                await fetchRemainingPlayers()
+            }        
         }
         run()
     }, [remainingPlayersIds])
@@ -57,16 +67,13 @@ export default function DraftPage({ user }) {
     }
 
     function checkDraftCompletion() {
-        console.log(draftData)
         if (draftData.length && draftData.draftPicks.length >= draftData.numPlayersPerUser * draftData.participants.length) {
             setDraftComplete(true)
         }
     }
 
     async function draftPlayer(player) {
-        console.log(user)
-        console.log(draftData.participants)
-        if (user._id === draftData.participants[participantIdx]) {
+        if (user._id === draftData.participants[participantIdx]._id) {
             let draftedPlayer = {}
             draftedPlayer.playerId = player.player_id
             PROPERTIES.forEach(property => {
@@ -77,7 +84,7 @@ export default function DraftPage({ user }) {
             draftedPlayer.position = player.position
             draftedPlayer.team = player.team
             draftedPlayer.projectedScore = player.projectedScore
-            draftedPlayer.user = draftData.participants[participantIdx]
+            draftedPlayer.user = draftData.participants[participantIdx]._id
             setDraftData(await draftsAPI.draftPlayer(draftId, draftedPlayer))
         }
     }
@@ -93,7 +100,6 @@ export default function DraftPage({ user }) {
     }
 
     async function getCurrentDraft() {
-        console.log("gettingDraft")
         const draft = await draftsAPI.getDraftById(draftId)
         setDraftData(draft)
     } 
@@ -123,19 +129,22 @@ export default function DraftPage({ user }) {
 
 
     // Render 
+
     return (
         <>
-            <h1>Draft: {draftData.name}</h1>
-            <div className="row">
-                <div className="col-6">
-                    <h1>Your Picks</h1>
-                    <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
-                </div>
-                <div className="col-6">
-                    <h1>Available Players</h1>
-                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
-                </div>
+        <h1>Draft: {draftData.name}</h1>        
+        {draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2>}
+        {draftData.participants.length && <h2>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h2>}
+        <div className="row">
+            <div className="col-6">
+                <h1>Your Picks</h1>
+                <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
             </div>
+            <div className="col-6">
+                <h1>Available Players</h1>
+                <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
+            </div>
+        </div>
         </>
     )
 }

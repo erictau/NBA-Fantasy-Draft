@@ -20,7 +20,7 @@ export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage
         }
         setTimeout(function() {
             setPlayersLoaded(true)
-        }, 1500)
+        }, 2000)
     }, [remainingPlayers, playerPage])
 
 

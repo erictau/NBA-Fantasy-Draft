@@ -25,18 +25,18 @@ export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
                 <Card>
                     <Card.Title>Summary Card</Card.Title>
                     <Card.Body>
-                        <Card.Text>
+                        <div>
                             <div>
                                 Total Score: {draftPicks.reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}
                             </div>
                             <div>
                                 Positions: G-{positions.G}, F-{positions.F}, C-{positions.C}
                             </div>
-                        </Card.Text>
+                        </div>
                     </Card.Body>
 
                 </Card>
-                {draftPicks.filter(player => player.user === user._id).map(filteredPlayer => <PlayerCard player={filteredPlayer} />)}
+                {draftPicks.filter(player => player.user === user._id).map((filteredPlayer, idx) => <PlayerCard player={filteredPlayer} key={idx} />)}
             </div>
         </div>
     )
