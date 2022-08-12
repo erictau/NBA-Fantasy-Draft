@@ -30,7 +30,7 @@ async function create(req, res) {
 async function show(req, res) {
     try {
         const draft = await Draft.findById(req.params.draftId)
-        if (draft && draft.participants.equals(req.user._id)) {
+        if (draft && draft.participants.includes(req.user._id)) {
             res.json(draft)
         } else {
             throw new Error('Cannot access draft page.')
@@ -44,7 +44,8 @@ async function show(req, res) {
 async function addPick(req, res) {
     try {
         const draft = await Draft.findById(req.params.draftId)
-        if (draft && draft.participants.equals(req.user._id)) {
+        const draftNo = draft.draftPicks.length
+        if (draft && draft.participants[draftNo] === req.user._id) {
             if (draft.draftPicks.findIndex(draftPick => draftPick.playerId === req.body.playerId) === -1) {
                 draft.draftPicks.push(req.body)
                 res.json(await draft.save())

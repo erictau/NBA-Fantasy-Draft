@@ -27,7 +27,7 @@ export default function PlayerCard({ player, draftComplete, draftPlayer}) {
                 <div>TOPG: {player.turnover}</div>
             </Card.Text>
             <div className="col-6 p-3 d-flex flex-column">
-                <b>Projected Score: {player.projectedScore}</b>
+                <b>Projected Score: {player.projectedScore.toFixed(2)}</b>
                 <div>
                     { !player.user && !draftComplete && <Button onClick={handleDraft} variant="primary">Draft</Button>}
                 </div>
