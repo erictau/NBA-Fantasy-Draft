@@ -4,7 +4,8 @@ module.exports = {
     index,
     create,
     show,
-    addPick
+    addPick,
+    addParticipants
 }
 
 async function index(req, res) {
@@ -53,6 +54,23 @@ async function addPick(req, res) {
         } else {
             throw new Error('Cannot add pick.')
         }
+    } catch(err) {
+        console.log(err)
+        res.status(400).json(err)
+    }
+}
+
+
+async function addParticipants(req, res) {
+    try {
+        const draft = await Draft.findById(req.params.draftId)
+        if (draft.draftPicks.length !== 0) {
+            throw new Error('Draft already started')
+        } else if (draft.participants.some(participant => participant.equals(req.body.userId))) {
+            throw new Error('User is already included in this draft')
+        }
+        draft.participants.push(req.body.userId)
+        res.json(await draft.save())
     } catch(err) {
         console.log(err)
         res.status(400).json(err)
