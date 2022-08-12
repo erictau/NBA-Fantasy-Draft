@@ -10,7 +10,7 @@ import playersThisSeason from '../../seed/playersThisSeason'
 // Constants
 let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
 
-export default function DraftPage() {
+export default function DraftPage({ user }) {
     // State
     const [draftData, setDraftData] = useState({name: '', draftPicks: []})
     const [remainingPlayersIds, setRemainingPlayersIds] = useState(null)
@@ -18,6 +18,7 @@ export default function DraftPage() {
     const [numPlayersRendered, setNumPlayersRendered] = useState(5)
     const [playerPage, setPlayerPage] = useState(1)
     const [draftComplete, setDraftComplete] = useState(false)
+    const [participantIdx, setParticipantIdx] = useState(0)
 
     // Params
     const { draftId } = useParams();
@@ -34,6 +35,7 @@ export default function DraftPage() {
     useEffect(function() {
         async function run() {
             getRemainingPlayersIds()
+            updateParticipantsIdx()
         }
         run()
     }, [draftData, playerPage])
@@ -50,25 +52,34 @@ export default function DraftPage() {
     }, [draftData])
 
     // Helper Functions
+    function updateParticipantsIdx() {
+        setParticipantIdx(draftData.draftPicks.length % draftData.participants.length)
+    }
+
     function checkDraftCompletion() {
-        if (draftData.draftPicks.length >= draftData.numPlayersPerUser) {
+        console.log(draftData)
+        if (draftData.length && draftData.draftPicks.length >= draftData.numPlayersPerUser * draftData.participants.length) {
             setDraftComplete(true)
         }
     }
 
     async function draftPlayer(player) {
-        let draftedPlayer = {}
-        draftedPlayer.playerId = player.player_id
-        PROPERTIES.forEach(property => {
-            draftedPlayer[property] = player[property]
-        })
-        draftedPlayer.first_name = player.first_name
-        draftedPlayer.last_name = player.last_name
-        draftedPlayer.position = player.position
-        draftedPlayer.team = player.team
-        draftedPlayer.projectedScore = player.projectedScore
-        draftedPlayer.user = draftData.participants
-        setDraftData(await draftsAPI.draftPlayer(draftId, draftedPlayer))
+        console.log(user)
+        console.log(draftData.participants)
+        if (user._id === draftData.participants[participantIdx]) {
+            let draftedPlayer = {}
+            draftedPlayer.playerId = player.player_id
+            PROPERTIES.forEach(property => {
+                draftedPlayer[property] = player[property]
+            })
+            draftedPlayer.first_name = player.first_name
+            draftedPlayer.last_name = player.last_name
+            draftedPlayer.position = player.position
+            draftedPlayer.team = player.team
+            draftedPlayer.projectedScore = player.projectedScore
+            draftedPlayer.user = draftData.participants[participantIdx]
+            setDraftData(await draftsAPI.draftPlayer(draftId, draftedPlayer))
+        }
     }
 
     async function calculateProjectedScore(player) {
@@ -82,6 +93,7 @@ export default function DraftPage() {
     }
 
     async function getCurrentDraft() {
+        console.log("gettingDraft")
         const draft = await draftsAPI.getDraftById(draftId)
         setDraftData(draft)
     } 
@@ -117,7 +129,7 @@ export default function DraftPage() {
             <div className="row">
                 <div className="col-6">
                     <h1>Your Picks</h1>
-                    <PicksList draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
+                    <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
                 </div>
                 <div className="col-6">
                     <h1>Available Players</h1>

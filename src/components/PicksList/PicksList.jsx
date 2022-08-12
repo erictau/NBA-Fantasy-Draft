@@ -4,7 +4,7 @@ import PlayerCard from '../PlayerCard/PlayerCard'
 import Card from 'react-bootstrap/Card'
 
 
-export default function PicksList({ draftPicks, numOfPlayersPerUser }) {
+export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
     // State
     const [positions, setPositions] = useState({'G': 0, 'F': 0, 'C': 0})
     
@@ -36,7 +36,7 @@ export default function PicksList({ draftPicks, numOfPlayersPerUser }) {
                     </Card.Body>
 
                 </Card>
-                {draftPicks.map(player => <PlayerCard player={player} />)}
+                {draftPicks.filter(player => player.user === user._id).map(filteredPlayer => <PlayerCard player={filteredPlayer} />)}
             </div>
         </div>
     )

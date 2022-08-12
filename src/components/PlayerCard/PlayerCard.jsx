@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 
 
-export default function PlayerCard({ player, draftPlayer, draftComplete}) {
+export default function PlayerCard({ player, draftComplete, draftPlayer}) {
 
     function handleDraft() {
         draftPlayer(player)
@@ -27,7 +27,7 @@ export default function PlayerCard({ player, draftPlayer, draftComplete}) {
                 <div>TOPG: {player.turnover}</div>
             </Card.Text>
             <div className="col-6 p-3 d-flex flex-column">
-                <b>Projected Score: {player.projectedScore.toFixed(2)}</b>
+                <b>Projected Score: {player.projectedScore}</b>
                 <div>
                     { !player.user && !draftComplete && <Button onClick={handleDraft} variant="primary">Draft</Button>}
                 </div>

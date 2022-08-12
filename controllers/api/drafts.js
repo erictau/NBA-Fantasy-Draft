@@ -19,7 +19,7 @@ async function create(req, res) {
     delete scoringSystem.numPlayersPerUser
     const draftForm = { 
         name: req.body.name,
-        participants: req.user._id,
+        participants: [req.user._id],
         numPlayersPerUser: req.body.numPlayersPerUser,
         scoringSystem
     }
