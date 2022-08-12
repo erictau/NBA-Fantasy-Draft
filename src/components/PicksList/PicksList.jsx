@@ -11,7 +11,7 @@ export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
     // Effects
     useEffect(function() {
         let tempPositions = {'G': 0, 'F': 0, 'C': 0}
-        draftPicks.forEach(player => {
+        draftPicks.filter(pick => pick.user === user._id).forEach(player => {
             player.position.split('-').forEach(pos => {
                 tempPositions[pos] += 1
             })
@@ -27,7 +27,7 @@ export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
                     <Card.Body>
                         <div>
                             <div>
-                                Total Score: {draftPicks.reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}
+                                Total Score: {draftPicks.filter(pick => pick.user === user._id).reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}
                             </div>
                             <div>
                                 Positions: G-{positions.G}, F-{positions.F}, C-{positions.C}
