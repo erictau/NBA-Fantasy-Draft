@@ -9,6 +9,7 @@ export default function DraftSetupPage() {
     const [draftForm, setDraftForm] = useState({
         name: '',
         scoringSystemName: '',
+        numPlayersPerUser: null,
         pts: null,
         ast: null,
         reb: null,
@@ -45,6 +46,8 @@ export default function DraftSetupPage() {
                 <Form.Control type='text' name='name' value={draftForm.name} onChange={handleChange} required/>
                 <Form.Label>Scoring System Name</Form.Label>
                 <Form.Control type='text' name='scoringSystemName' value={draftForm.scoringSystemName} onChange={handleChange} />
+                <Form.Label>Number of Players Per User</Form.Label>
+                <Form.Control type='number' name='numPlayersPerUser' value={draftForm.numPlayersPerUser} onChange={handleChange} />
                 <Form.Label>Scoring System - Pts</Form.Label>
                 <Form.Control type='number' name='pts' value={draftForm.pts} onChange={handleChange} />
                 <Form.Label>Scoring System - Ast</Form.Label>

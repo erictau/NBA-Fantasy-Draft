@@ -19,7 +19,7 @@ export default function App() {
         <>
           <NavBar user={user} setUser={setUser} />
           <Routes>
-            <Route path="/" element={<Dashboard />}/>
+            <Route path="/" element={<Dashboard user={user}/>}/>
             <Route path="/drafts/new" element={<DraftSetupPage />}/>
             <Route path="/drafts/:draftId" element={<DraftPage />} />
           </Routes>

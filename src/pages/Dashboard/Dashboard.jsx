@@ -9,7 +9,7 @@ import * as playersAPI from '../../utilities/players-api'
 import * as draftsAPI from '../../utilities/drafts-api'
 import playersThisSeason from '../../seed/playersThisSeason'
 
-export default function Dashboard() {
+export default function Dashboard({ user }) {
     // State
     const [drafts, setDrafts] = useState(null)
     
@@ -26,7 +26,7 @@ export default function Dashboard() {
         <>
             <Link to='/drafts/new' className="btn btn-primary">Create New Draft</Link>
             <div className="container">
-                <DraftList drafts={drafts}/>
+                <DraftList drafts={drafts} user={user}/>
             </div>
         </>
     )

@@ -16,9 +16,11 @@ async function create(req, res) {
     const scoringSystem = {...req.body}
     scoringSystem.name = scoringSystem.scoringSystemName
     delete scoringSystem.scoringSystemName
+    delete scoringSystem.numPlayersPerUser
     const draftForm = { 
         name: req.body.name,
         participants: req.user._id,
+        numPlayersPerUser: req.body.numPlayersPerUser,
         scoringSystem
     }
     let newDraft = await Draft.create(draftForm)

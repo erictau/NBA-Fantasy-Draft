@@ -13,10 +13,11 @@ let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
 export default function DraftPage() {
     // State
     const [draftData, setDraftData] = useState({name: '', draftPicks: []})
-    let [remainingPlayersIds, setRemainingPlayersIds] = useState(null)
+    const [remainingPlayersIds, setRemainingPlayersIds] = useState(null)
     const [remainingPlayers, setRemainingPlayers] = useState([])
     const [numPlayersRendered, setNumPlayersRendered] = useState(5)
     const [playerPage, setPlayerPage] = useState(1)
+    const [draftComplete, setDraftComplete] = useState(false)
 
     // Params
     const { draftId } = useParams();
@@ -44,8 +45,17 @@ export default function DraftPage() {
         run()
     }, [remainingPlayersIds])
 
+    useEffect(function() {
+        checkDraftCompletion()
+    }, [draftData])
 
     // Helper Functions
+    function checkDraftCompletion() {
+        if (draftData.draftPicks.length >= draftData.numPlayersPerUser) {
+            setDraftComplete(true)
+        }
+    }
+
     async function draftPlayer(player) {
         let draftedPlayer = {}
         draftedPlayer.playerId = player.player_id
@@ -107,11 +117,11 @@ export default function DraftPage() {
             <div className="row">
                 <div className="col-6">
                     <h1>Your Picks</h1>
-                    <PicksList draftPicks={draftData.draftPicks}/>
+                    <PicksList draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
                 </div>
                 <div className="col-6">
                     <h1>Available Players</h1>
-                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} />
+                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
                 </div>
             </div>
         </>

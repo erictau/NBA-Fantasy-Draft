@@ -53,7 +53,7 @@ const draftSchema = new Schema({
         }
     },
     draftPicks: [draftPickSchema],
-    isComplete: { type: Boolean, default: false }
+    numPlayersPerUser: Number,
 },{
     timestamps: true,
     toJSON: {virtuals: true}

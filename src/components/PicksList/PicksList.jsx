@@ -4,7 +4,7 @@ import PlayerCard from '../PlayerCard/PlayerCard'
 import Card from 'react-bootstrap/Card'
 
 
-export default function PicksList({ draftPicks }) {
+export default function PicksList({ draftPicks, numOfPlayersPerUser }) {
     // State
     const [positions, setPositions] = useState({'G': 0, 'F': 0, 'C': 0})
     

@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Spinner from 'react-bootstrap/Spinner';
 
 
-export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage, draftPlayer }) {
+export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage, draftPlayer, draftComplete }) {
     // State
     const [disabledBtn, setDisabledBtn] = useState(true)
     const [playersLoaded, setPlayersLoaded] = useState(false)
@@ -39,7 +39,7 @@ export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage
                 {disabledBtn ? <div className='col-2'> </div> :<div className="col-2"><Button onClick={handlePageBtn}>Prev 5</Button></div>}
                 <div className="container col-8">
                     <h6>Page {playerPage}</h6>
-                    {remainingPlayers.map((player, idx) => <PlayerCard player={player} draftPlayer={draftPlayer} key={idx} />)}
+                    {remainingPlayers.map((player, idx) => <PlayerCard player={player} draftPlayer={draftPlayer} draftComplete={draftComplete} key={idx} />)}
                 </div>
                 <div className="col-2">
                     <Button onClick={handlePageBtn}>Next 5</Button>

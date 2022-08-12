@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom'
 
-export default function DraftCard({ draft }) {
+export default function DraftCard({ draft, user }) {
     return (
         <Link to={`/drafts/${draft._id}`} style={{textDecoration: 'none', color: 'black'}}>
             <Card>
@@ -9,6 +9,7 @@ export default function DraftCard({ draft }) {
                 <Card.Body>
                     <Card.Text>
                         <div><b>Total Score: {draft.draftPicks.reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}</b></div>
+                        <div>Number of Players Selected: {draft.draftPicks.filter(player => player.user === user._id).length}/{draft.numPlayersPerUser}</div>
                         {draft.draftPicks.map(player => `${player.first_name} ${player.last_name}`).join(' | ')}
                     </Card.Text>
                     <Card.Text>
