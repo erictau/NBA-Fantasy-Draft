@@ -35,16 +35,28 @@ export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage
 
     if (playersLoaded) {
         return (
-            <div className="d-flex row align-items-center">
-                {disabledBtn ? <div className='col-2'> </div> :<div className="col-2"><Button onClick={handlePageBtn}>Prev 5</Button></div>}
-                <div className="container col-8">
-                    <h6>Page {playerPage}</h6>
-                    {remainingPlayers.map((player, idx) => <PlayerCard player={player} draftPlayer={draftPlayer} draftComplete={draftComplete} key={idx} />)}
+            <>
+                <div className="row d-flex align-items-center justify-content-center">
+                    {
+                        disabledBtn ? 
+                        <div className="col-4"> </div> 
+                        :
+                        <div className="col-4">
+                            <Button onClick={handlePageBtn}>Prev 5</Button>
+                        </div>
+                    }                   
+                    <h6 className="col-4">Page {playerPage}</h6>
+                    <div className="col-4">
+                        <Button onClick={handlePageBtn}>Next 5</Button>
+                    </div>
+
                 </div>
-                <div className="col-2">
-                    <Button onClick={handlePageBtn}>Next 5</Button>
+                <div className="d-flex row align-items-center">
+                    <div className="container">
+                        {remainingPlayers.map((player, idx) => <PlayerCard player={player} draftPlayer={draftPlayer} draftComplete={draftComplete} key={idx} />)}
+                    </div>
                 </div>
-            </div>
+            </>
         )
     } else {
         return (

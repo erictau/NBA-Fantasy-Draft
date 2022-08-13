@@ -30,7 +30,7 @@ async function create(req, res) {
 
 async function show(req, res) {
     try {
-        const draft = await Draft.findById(req.params.draftId).populate('participants')
+        let draft = await Draft.findById(req.params.draftId).populate('participants')
         if (draft && draft.participants.some(participant => participant._id.equals(req.user._id))) {
             res.json(draft)
         } else {

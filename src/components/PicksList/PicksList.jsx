@@ -21,7 +21,7 @@ export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
 
     return (
         <div className="d-flex row align-items-center">
-            <div className="container col-8">
+            <div className="container">
                 <Card>
                     <Card.Title>Summary Card</Card.Title>
                     <Card.Body>

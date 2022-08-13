@@ -6,6 +6,7 @@ import * as playersAPI from '../../utilities/players-api'
 import PlayerList from '../../components/PlayerList//PlayerList'
 import PicksList from '../../components/PicksList//PicksList'
 import playersThisSeason from '../../seed/playersThisSeason'
+import DraftedPlayersList from '../../components/DraftedPlayersList/DraftedPlayersList'
 
 // Constants
 let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
@@ -129,24 +130,27 @@ export default function DraftPage({ user }) {
         setRemainingPlayers(tempRemainingPlayers)
     }
 
-
     // Render 
 
     return (
-        <>
+        <div className="container">
         <h1>Draft: {draftData.name}</h1>        
         {!draftComplete ? draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2> : <h2>Draft is Complete!</h2>}
         {draftData.participants.length && <h2>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h2>}
         <div className="row">
-            <div className="col-6">
+            <div className="col-4">
+                <h1>Drafted Players</h1>
+                <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
+            </div>
+            <div className="col-4">
                 <h1>Your Picks</h1>
                 <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
             </div>
-            <div className="col-6">
+            <div className="col-4">
                 <h1>Available Players</h1>
                 <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
             </div>
         </div>
-        </>
+        </div>
     )
 }
