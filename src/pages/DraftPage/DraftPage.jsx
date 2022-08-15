@@ -7,6 +7,7 @@ import PlayerList from '../../components/PlayerList//PlayerList'
 import PicksList from '../../components/PicksList//PicksList'
 import playersThisSeason from '../../seed/playersThisSeason'
 import DraftedPlayersList from '../../components/DraftedPlayersList/DraftedPlayersList'
+import socket from '../../utilities/socket'
 
 // Constants
 let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
