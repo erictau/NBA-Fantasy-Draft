@@ -6,18 +6,27 @@ import * as playersAPI from '../../utilities/players-api'
 import PlayerList from '../../components/PlayerList//PlayerList'
 import PicksList from '../../components/PicksList//PicksList'
 import playersThisSeason from '../../seed/playersThisSeason'
+import DraftedPlayersList from '../../components/DraftedPlayersList/DraftedPlayersList'
+import socket from '../../utilities/socket'
 
 // Constants
 let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
 
-export default function DraftPage() {
+export default function DraftPage({ user }) {
     // State
-    const [draftData, setDraftData] = useState({name: '', draftPicks: []})
+    const [draftData, setDraftData] = useState({
+        name: '', 
+        draftPicks: [],
+        participants: [], 
+        scoringSystem: {},
+        numPlayersPerUser: 0
+    })
     const [remainingPlayersIds, setRemainingPlayersIds] = useState(null)
     const [remainingPlayers, setRemainingPlayers] = useState([])
     const [numPlayersRendered, setNumPlayersRendered] = useState(5)
     const [playerPage, setPlayerPage] = useState(1)
     const [draftComplete, setDraftComplete] = useState(false)
+    const [participantIdx, setParticipantIdx] = useState(0)
 
     // Params
     const { draftId } = useParams();
@@ -34,41 +43,62 @@ export default function DraftPage() {
     useEffect(function() {
         async function run() {
             getRemainingPlayersIds()
+            if (draftData.participants.length) {
+                updateParticipantsIdx()
+            }
         }
         run()
     }, [draftData, playerPage])
     
     useEffect(function() {
-        async function run() {            
-            await fetchRemainingPlayers()
+        async function run() {    
+            if (remainingPlayersIds) {
+                await fetchRemainingPlayers()
+            }        
         }
         run()
     }, [remainingPlayersIds])
 
     useEffect(function() {
-        checkDraftCompletion()
+        if (draftData.draftPicks.length) {
+            checkDraftCompletion()
+        }
     }, [draftData])
 
+    // Socket Message Listeners
+    // When a user drafts a player, all other clients will receive the 
+    socket.on('update-draft', function(data) {
+        setDraftData(data)
+    })
+
     // Helper Functions
+    function updateParticipantsIdx() {
+        setParticipantIdx(draftData.draftPicks.length % draftData.participants.length)
+    }
+
     function checkDraftCompletion() {
-        if (draftData.draftPicks.length >= draftData.numPlayersPerUser) {
+        if (draftData.draftPicks.length >= draftData.numPlayersPerUser * draftData.participants.length) {
             setDraftComplete(true)
         }
     }
 
     async function draftPlayer(player) {
-        let draftedPlayer = {}
-        draftedPlayer.playerId = player.player_id
-        PROPERTIES.forEach(property => {
-            draftedPlayer[property] = player[property]
-        })
-        draftedPlayer.first_name = player.first_name
-        draftedPlayer.last_name = player.last_name
-        draftedPlayer.position = player.position
-        draftedPlayer.team = player.team
-        draftedPlayer.projectedScore = player.projectedScore
-        draftedPlayer.user = draftData.participants
-        setDraftData(await draftsAPI.draftPlayer(draftId, draftedPlayer))
+        if (user._id === draftData.participants[participantIdx]._id) {
+            let draftedPlayer = {}
+            draftedPlayer.playerId = player.player_id
+            PROPERTIES.forEach(property => {
+                draftedPlayer[property] = player[property]
+            })
+            draftedPlayer.first_name = player.first_name
+            draftedPlayer.last_name = player.last_name
+            draftedPlayer.position = player.position
+            draftedPlayer.team = player.team
+            draftedPlayer.projectedScore = player.projectedScore
+            draftedPlayer.user = draftData.participants[participantIdx]._id
+            let updatedDraftData = await draftsAPI.draftPlayer(draftId, draftedPlayer)
+            setDraftData(updatedDraftData)
+            socket.emit('draft-player', updatedDraftData)
+        }
     }
 
     async function calculateProjectedScore(player) {
@@ -109,21 +139,27 @@ export default function DraftPage() {
         setRemainingPlayers(tempRemainingPlayers)
     }
 
-
     // Render 
+
     return (
-        <>
-            <h1>Draft: {draftData.name}</h1>
-            <div className="row">
-                <div className="col-6">
-                    <h1>Your Picks</h1>
-                    <PicksList draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
-                </div>
-                <div className="col-6">
-                    <h1>Available Players</h1>
-                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
-                </div>
+        <div className="container">
+        <h1>Draft: {draftData.name}</h1>        
+        {!draftComplete ? draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2> : <h2>Draft is Complete!</h2>}
+        {draftData.participants.length && <h2>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h2>}
+        <div className="row">
+            <div className="col-4">
+                <h1>Drafted Players</h1>
+                <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
             </div>
-        </>
+            <div className="col-4">
+                <h1>Your Picks</h1>
+                <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
+            </div>
+            <div className="col-4">
+                <h1>Available Players</h1>
+                <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
+            </div>
+        </div>
+        </div>
     )
 }

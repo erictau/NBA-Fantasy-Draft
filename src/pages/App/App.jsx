@@ -21,7 +21,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard user={user}/>}/>
             <Route path="/drafts/new" element={<DraftSetupPage />}/>
-            <Route path="/drafts/:draftId" element={<DraftPage />} />
+            <Route path="/drafts/:draftId" element={<DraftPage user={user} />} />
           </Routes>
         </>
       ) : (

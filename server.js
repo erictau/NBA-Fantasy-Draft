@@ -9,6 +9,10 @@ require('./config/database')
 
 const app = express();
 
+// Socket.io
+const http = require('http').Server(app)
+require('./config/io').init(http);
+
 app.use(logger('dev'));
 app.use(express.json());
 
@@ -26,13 +30,13 @@ app.use('/api/drafts', ensureLoggedIn, require('./routes/api/drafts'))
 // The following "catch all" route (note the *) is necessary
 // to return the index.html on all non-AJAX requests
 app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Configure to use port 3001 instead of 3000 during
 // development to avoid collision with React's dev server
 const port = process.env.PORT || 3001;
 
-app.listen(port, function() {
+http.listen(port, function() {
   console.log(`Express app running on port ${port}`)
 });

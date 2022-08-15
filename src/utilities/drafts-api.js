@@ -16,3 +16,8 @@ export async function getDraftById(draftId) {
 export async function draftPlayer(draftId, player) {
     return await sendRequest(`${BASE_URL}/${draftId}/select-player`, 'POST', player)
 }
+
+export async function joinDraft(formData) {
+    console.log(formData)
+    return await sendRequest(`${BASE_URL}/${formData.draftId}/add-participants`, 'POST', formData)
+}

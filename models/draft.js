@@ -35,10 +35,10 @@ const draftPickSchema = new Schema({
 const draftSchema = new Schema({
     name: String,
     // Change this into an array of participants to allow multiple people to draft together. 
-    participants: {
+    participants: [{
         type: Schema.Types.ObjectId, 
         ref: 'User'
-    },
+    }],
     scoringSystem: {
         type: scoringSchema,
         default: {
