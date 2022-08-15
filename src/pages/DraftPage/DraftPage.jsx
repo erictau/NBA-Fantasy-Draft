@@ -65,6 +65,12 @@ export default function DraftPage({ user }) {
         }
     }, [draftData])
 
+    // Socket Message Listeners
+    // When a user drafts a player, all other clients will receive the 
+    socket.on('update-draft', function(data) {
+        setDraftData(data)
+    })
+
     // Helper Functions
     function updateParticipantsIdx() {
         setParticipantIdx(draftData.draftPicks.length % draftData.participants.length)
@@ -89,7 +95,9 @@ export default function DraftPage({ user }) {
             draftedPlayer.team = player.team
             draftedPlayer.projectedScore = player.projectedScore
             draftedPlayer.user = draftData.participants[participantIdx]._id
-            setDraftData(await draftsAPI.draftPlayer(draftId, draftedPlayer))
+            let updatedDraftData = await draftsAPI.draftPlayer(draftId, draftedPlayer)
+            setDraftData(updatedDraftData)
+            socket.emit('draft-player', updatedDraftData)
         }
     }
 
