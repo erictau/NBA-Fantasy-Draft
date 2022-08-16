@@ -27,6 +27,7 @@ export default function DraftPage({ user }) {
     const [playerPage, setPlayerPage] = useState(1)
     const [draftComplete, setDraftComplete] = useState(false)
     const [participantIdx, setParticipantIdx] = useState(0)
+    const [memoizedPlayers, setMemoizedPlayers] = useState({})
 
     // Params
     const { draftId } = useParams();
@@ -66,7 +67,7 @@ export default function DraftPage({ user }) {
     }, [draftData])
 
     // Socket Message Listeners
-    // When a user drafts a player, all other clients will receive the 
+    // When a user drafts a player, all other clients will receive the updated draft data
     socket.on('update-draft', function(data) {
         setDraftData(data)
     })
@@ -101,8 +102,8 @@ export default function DraftPage({ user }) {
         }
     }
 
-    async function calculateProjectedScore(player) {
-        let scoring = await draftData.scoringSystem
+    function calculateProjectedScore(player) {
+        let scoring = draftData.scoringSystem
         let totalScore = 0
         PROPERTIES.forEach(property => {
             totalScore += player[property] * scoring[property]
@@ -116,7 +117,7 @@ export default function DraftPage({ user }) {
         setDraftData(draft)
     } 
 
-    // Needs work.  
+
     // Sets the state variable 'remainingPlayersIds' based on all players minus players who've been drafted already. Saves Ids only. 
     function getRemainingPlayersIds() {
         let tempRemainingPlayersIds = remainingPlayersIds ? [...remainingPlayersIds] : [...playersThisSeason]
@@ -134,8 +135,23 @@ export default function DraftPage({ user }) {
     async function fetchRemainingPlayers() {
         let start = (playerPage - 1) * numPlayersRendered
         let end = start + numPlayersRendered
-        const tempRemainingPlayers = await playersAPI.getPlayersById(remainingPlayersIds.slice(start, end))
-        tempRemainingPlayers.forEach(async function(player) { player.projectedScore = await calculateProjectedScore(player) })
+        let playerIdList = remainingPlayersIds.slice(start, end)
+        let tempRemainingPlayers = []
+        let tempMemoizedPlayers = {}
+
+        // Utilize memoization to minimize API calls.
+        playerIdList.forEach(async (id) => {
+            if (memoizedPlayers[id]) {
+                tempRemainingPlayers.push(memoizedPlayers[id])
+            } else {
+                let player = await playersAPI.getOnePlayerById(id)
+                player.projectedScore = calculateProjectedScore(player)
+                tempRemainingPlayers.push(player)
+                tempMemoizedPlayers[player.player_id] = player
+            }
+        })
+        Object.assign(tempMemoizedPlayers, memoizedPlayers)
+        setMemoizedPlayers(tempMemoizedPlayers)
         setRemainingPlayers(tempRemainingPlayers)
     }
 

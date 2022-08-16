@@ -19,6 +19,18 @@ export async function getPlayersById(idArray) {
     return playersArray.data
 }
 
+export async function getOnePlayerById(id) {
+    let seasonQueryString = `?season=${SEASON}`
+    let playerQueryString = `&player_ids[]=${id}`
+    let player = await sendRequest(`${STATS_URL}${seasonQueryString}${playerQueryString}`)
+    player = player.data[0]
+    let playerInfo = await sendRequest(`${PLAYERS_URL}/${player.player_id}`)
+    player.first_name = playerInfo.first_name
+    player.last_name = playerInfo.last_name
+    player.position = playerInfo.position
+    player.team = playerInfo.team.abbreviation
+    return player
+}
 
 
 /* Functions below this point were created to pre-process the API and extract data to be used in the project. This helps avoid the need to perform large fetch requests to the 'Ball Don't Lie API' which could easily result in 429 responses (Bad Request) due to overloading the API server. */
