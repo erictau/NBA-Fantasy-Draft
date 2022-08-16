@@ -12,8 +12,12 @@ function init(http) {
         console.log('Socket is connected to server');
 
         // Add addl message listeners here
+        socket.on('joined-draft', function(draftId) {
+            socket.join(draftId)
+        })
+
         socket.on('draft-player', function(data) {
-            socket.broadcast.emit('update-draft', data)
+            socket.to(data._id).emit('update-draft', data)
         })
 
     

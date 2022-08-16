@@ -31,7 +31,7 @@ export default function LoginForm({ setUser }) {
 
   return (
     <div>
-      <div className="container w-50 border">
+      <div className="container w-25 border p-3">
         <h1>Log In</h1>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Form.Label>Email</Form.Label>

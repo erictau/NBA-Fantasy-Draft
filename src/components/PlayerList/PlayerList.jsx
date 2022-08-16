@@ -1,4 +1,3 @@
-import * as playersAPI from '../../utilities/players-api'
 import PlayerCard from '../PlayerCard/PlayerCard'
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'

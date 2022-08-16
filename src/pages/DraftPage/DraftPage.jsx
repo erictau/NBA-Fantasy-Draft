@@ -8,6 +8,9 @@ import PicksList from '../../components/PicksList//PicksList'
 import playersThisSeason from '../../seed/playersThisSeason'
 import DraftedPlayersList from '../../components/DraftedPlayersList/DraftedPlayersList'
 import socket from '../../utilities/socket'
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 // Constants
 let PROPERTIES = ['pts', 'ast', 'reb', 'stl', 'blk', 'turnover', 'pf']
@@ -28,6 +31,8 @@ export default function DraftPage({ user }) {
     const [draftComplete, setDraftComplete] = useState(false)
     const [participantIdx, setParticipantIdx] = useState(0)
     const [memoizedPlayers, setMemoizedPlayers] = useState({})
+    const [showOffCanvas, setShowOffCanvas] = useState(false);
+  
 
     // Params
     const { draftId } = useParams();
@@ -38,6 +43,7 @@ export default function DraftPage({ user }) {
         async function startup() {
             await getCurrentDraft()
         }
+        socket.emit('joined-draft', draftId)
         startup()
     }, [])
 
@@ -71,8 +77,14 @@ export default function DraftPage({ user }) {
     socket.on('update-draft', function(data) {
         setDraftData(data)
     })
-
+    
+    
+    // OffCanvas Handler Functions
+    const handleClose = () => setShowOffCanvas(false);
+    const handleShow = () => setShowOffCanvas(true);
+    
     // Helper Functions
+
     function updateParticipantsIdx() {
         setParticipantIdx(draftData.draftPicks.length % draftData.participants.length)
     }
@@ -99,7 +111,7 @@ export default function DraftPage({ user }) {
             let updatedDraftData = await draftsAPI.draftPlayer(draftId, draftedPlayer)
             setDraftData(updatedDraftData)
             socket.emit('draft-player', updatedDraftData)
-        }
+            }
     }
 
     function calculateProjectedScore(player) {
@@ -159,23 +171,41 @@ export default function DraftPage({ user }) {
 
     return (
         <div className="container">
-        <h1>Draft: {draftData.name}</h1>        
-        {!draftComplete ? draftData.participants.length && <h2>Player {draftData.participants[participantIdx].name} is Up</h2> : <h2>Draft is Complete!</h2>}
-        {draftData.participants.length && <h2>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h2>}
-        <div className="row">
-            <div className="col-4">
-                <h1>Drafted Players</h1>
-                <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
+            <div>
+                <h4>Draft: {draftData.name}</h4>        
+                {!draftComplete ? draftData.participants.length && <h6>Player {draftData.participants[participantIdx].name} is Up</h6> : <h6>Draft is Complete!</h6>}
+                {draftData.participants.length && <h4>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h4>}
             </div>
-            <div className="col-4">
-                <h1>Your Picks</h1>
-                <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
+            <div className="row">
+                <Button variant="primary" className="d-lg-none" onClick={handleShow}>
+                    Show All Drafted Players
+                </Button>
+
+                <div className="col-lg-4">
+                    <Offcanvas show={showOffCanvas} onHide={handleClose} responsive="lg" scroll="true" backdrop="false">
+                        <Offcanvas.Header closeButton>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                        <p className="mb-0">
+                            <div>
+                                <h5>Drafted Players</h5>
+                                <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
+                            </div>
+                        </p>
+                        </Offcanvas.Body>
+                    </Offcanvas>
+                </div>
+
+
+                <div className="col-lg-4 col-md-6">
+                    <h5>Your Picks</h5>
+                    <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
+                </div>
+                <div className="col-lg-4 col-md-6">
+                    <h5>Available Players</h5>
+                    <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete} />
+                </div>
             </div>
-            <div className="col-4">
-                <h1>Available Players</h1>
-                <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete}/>
-            </div>
-        </div>
         </div>
     )
 }

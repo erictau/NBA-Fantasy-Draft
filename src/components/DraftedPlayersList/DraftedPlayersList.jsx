@@ -1,9 +1,29 @@
+import Table from 'react-bootstrap/Table';
+
+
 export default function DraftedPlayersList({participants, draftPicks}) {
     return (
-        <div className="d-flex row align-items-center">
-            <div className="container">
-                {draftPicks.map((pick, idx) => {return <div key={idx} className="text-start">{idx + 1}. {participants[idx % participants.length].name} - {pick.first_name} {pick.last_name} - {pick.projectedScore.toFixed(2)} pts</div>})}
-            </div>
-        </div>
+        <Table striped bordered hover size="lg" className="text-center table-primary">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Player</th>
+                    <th>Projected</th>
+                </tr>
+            </thead>
+            <tbody>
+                {draftPicks.map((pick, idx) => {
+                    return (
+                        <tr key={idx}>
+                            <td>{idx + 1}</td>
+                            <td>{participants[idx % participants.length].name}</td>
+                            <td>{`${pick.first_name} ${pick.last_name}`}</td>
+                            <td>{pick.projectedScore.toFixed(2)} pts</td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </Table>
     )
 }

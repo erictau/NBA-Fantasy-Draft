@@ -10,13 +10,14 @@ export default function PlayerCard({ player, draftPlayer, draftComplete}) {
     }
 
     return (
-        <Card>
-        <Card.Title>{player.first_name} {player.last_name} ({player.team})</Card.Title>
-        <div><b>Projected Score: {player.projectedScore.toFixed(2)}</b></div>
+        <Card className="bg-primary text-white">
+        <Card.Header className="bg-primary text-white">{player.first_name} {player.last_name} ({player.team})
+            <div><b>Projected Score: {player.projectedScore.toFixed(2)}</b></div>
+        </Card.Header>
         <div>
             {!player.user && !draftComplete && <Button onClick={handleDraft} variant="primary">Draft</Button>}
         </div>
-        <Card.Body>
+        <Card.Body className="bg-light text-dark">
             <div className="row">
             <div className="col-6 d-flex flex-column">
                 <div>POS: {player.position}</div>

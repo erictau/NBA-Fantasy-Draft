@@ -47,7 +47,7 @@ export default function Dashboard({ user }) {
                     <Form.Group className="mb-3">
                         <Form.Label>Join Draft by ID</Form.Label>
                         <Form.Control type="text" name="draftId" value={formData.draftId} onChange={handleChange} placeholder="Enter Draft ID" />
-                        <Button type="submit">Join Draft</Button>
+                        <Button variant="primary" className="m-2" type="submit">Join Draft</Button>
                     </Form.Group>
                 </Form>
             </div>
