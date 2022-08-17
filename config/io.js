@@ -19,9 +19,6 @@ function init(http) {
         socket.on('draft-player', function(data) {
             socket.to(data._id).emit('update-draft', data)
         })
-
-    
-
     })
 }
 

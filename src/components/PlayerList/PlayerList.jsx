@@ -35,20 +35,19 @@ export default function PlayerList({ remainingPlayers, playerPage, setPlayerPage
     if (playersLoaded) {
         return (
             <>
-                <div className="row d-flex align-items-center justify-content-center">
+                <div className="row d-flex align-items-center justify-content-center mb-3">
                     {
                         disabledBtn ? 
                         <div className="col-4"> </div> 
                         :
-                        <div className="col-4">
-                            <Button onClick={handlePageBtn}>Prev 5</Button>
+                        <div className="col-4 d-flex justify-content-start">
+                            <Button className="btn-sm" onClick={handlePageBtn}>Prev 5</Button>
                         </div>
                     }                   
                     <h6 className="col-4">Page {playerPage}</h6>
-                    <div className="col-4">
-                        <Button onClick={handlePageBtn}>Next 5</Button>
+                    <div className="col-4 d-flex justify-content-end">
+                        <Button className="btn-sm" onClick={handlePageBtn}>Next 5</Button>
                     </div>
-
                 </div>
                 <div className="d-flex row align-items-center">
                     <div className="container">

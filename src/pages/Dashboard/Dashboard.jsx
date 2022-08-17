@@ -42,9 +42,10 @@ export default function Dashboard({ user }) {
     return (
         <>
             <div className='container'>
-                <Link to='/drafts/new' className="btn btn-primary">Create New Draft</Link>
+                <h4>Add A Draft</h4>
+                <Link to='/drafts/new' className="btn btn-primary mb-2">Create New Draft</Link>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3 w-50 mx-auto">
                         <Form.Label>Join Draft by ID</Form.Label>
                         <Form.Control type="text" name="draftId" value={formData.draftId} onChange={handleChange} placeholder="Enter Draft ID" />
                         <Button variant="primary" className="m-2" type="submit">Join Draft</Button>

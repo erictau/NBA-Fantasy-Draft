@@ -22,16 +22,13 @@ export default function PicksList({ user, draftPicks, numOfPlayersPerUser }) {
     return (
         <div className="d-flex row align-items-center">
             <div className="container">
-                <Card>
-                    <Card.Title>Summary Card</Card.Title>
-                    <Card.Body>
+                <Card className="bg-light text-dark">
+                    <Card.Title className="m-0">
+                        Total Score: {draftPicks.filter(pick => pick.user === user._id).reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}
+                    </Card.Title>
+                    <Card.Body className="p-0">
                         <div>
-                            <div>
-                                Total Score: {draftPicks.filter(pick => pick.user === user._id).reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}
-                            </div>
-                            <div>
-                                Positions: G-{positions.G}, F-{positions.F}, C-{positions.C}
-                            </div>
+                            Positions: G-{positions.G}, F-{positions.F}, C-{positions.C}
                         </div>
                     </Card.Body>
 

@@ -176,32 +176,34 @@ export default function DraftPage({ user }) {
                 {!draftComplete ? draftData.participants.length && <h6>Player {draftData.participants[participantIdx].name} is Up</h6> : <h6>Draft is Complete!</h6>}
                 {draftData.participants.length && <h4>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h4>}
             </div>
-            <div className="row">
+            <div className="row draft-area">
                 <Button variant="primary" className="d-lg-none" onClick={handleShow}>
                     Show All Drafted Players
                 </Button>
 
-                <div className="col-lg-4">
-                    <Offcanvas show={showOffCanvas} onHide={handleClose} responsive="lg" scroll="true" backdrop="false">
-                        <Offcanvas.Header closeButton>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                        <p className="mb-0">
-                            <div>
-                                <h5>Drafted Players</h5>
-                                <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
-                            </div>
-                        </p>
-                        </Offcanvas.Body>
-                    </Offcanvas>
-                </div>
-
-
-                <div className="col-lg-4 col-md-6">
+                <div className="col-lg-4 col-md-5">
                     <h5>Your Picks</h5>
                     <PicksList user={user} draftPicks={draftData.draftPicks} numPlayersPerUser={draftData.numPlayersPerUser}/>
                 </div>
-                <div className="col-lg-4 col-md-6">
+
+                <div className="col-lg-4 col-md-2">
+                    <div className="d-flex flex-column align-items-center justify-content-start">
+                        <Offcanvas show={showOffCanvas} onHide={handleClose} responsive="lg" scroll="true" backdrop="false">
+                            <Offcanvas.Header closeButton>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                            <p className="mb-0">
+                                <div>
+                                    <h5>Drafted Players</h5>
+                                    <DraftedPlayersList draftPicks={draftData.draftPicks} participants={draftData.participants}/>
+                                </div>
+                            </p>
+                            </Offcanvas.Body>
+                        </Offcanvas>
+                    </div>
+                </div>
+
+                <div className="col-lg-4 col-md-5">
                     <h5>Available Players</h5>
                     <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete} />
                 </div>

@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 
 export default function DraftedPlayersList({participants, draftPicks}) {
     return (
-        <Table striped bordered hover size="lg" className="text-center table-primary">
+        <Table bordered hover size="lg" className="text-center text-dark table-light border-dark">
             <thead>
                 <tr>
                     <th>#</th>

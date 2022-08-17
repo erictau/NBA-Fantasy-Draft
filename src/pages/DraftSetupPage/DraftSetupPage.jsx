@@ -40,14 +40,18 @@ export default function DraftSetupPage() {
     }
 
     return (
-        <>
+        <div className="container w-50 p-2">
             <Form autoComplete="off" onSubmit={handleSubmit}>
+                <h4>Draft Info</h4>
                 <Form.Label>Draft Name</Form.Label>
                 <Form.Control type='text' name='name' value={draftForm.name} onChange={handleChange} required/>
                 <Form.Label>Scoring System Name</Form.Label>
                 <Form.Control type='text' name='scoringSystemName' value={draftForm.scoringSystemName} onChange={handleChange} />
                 <Form.Label>Number of Players Per User</Form.Label>
                 <Form.Control type='number' name='numPlayersPerUser' value={draftForm.numPlayersPerUser} onChange={handleChange} />
+                <br />
+                <br />
+                <h4>Scoring System</h4>
                 <Form.Label>Scoring System - Pts</Form.Label>
                 <Form.Control type='number' name='pts' value={draftForm.pts} onChange={handleChange} />
                 <Form.Label>Scoring System - Ast</Form.Label>
@@ -63,8 +67,8 @@ export default function DraftSetupPage() {
                 <Form.Label>Scoring System - Fouls</Form.Label>
                 <Form.Control type='number' name='pf' value={draftForm.pf} onChange={handleChange} />
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" className="mt-3">Submit</Button>
             </Form>
-        </>
+        </div>
     )
 }

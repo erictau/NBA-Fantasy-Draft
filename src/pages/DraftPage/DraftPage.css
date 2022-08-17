@@ -1,3 +1,12 @@
 .loading {
     height: 100vh;
 }
+
+.draft-area {
+    border: 1px solid rgba(20,20,20,.7);
+    border-radius: 20px;
+    background-color: rgba(20,20,20,.7);
+    padding: 20px;
+}
+
+

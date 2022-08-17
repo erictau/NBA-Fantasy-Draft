@@ -1,11 +1,12 @@
+import "./DraftCard.css"
 import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom'
 
 export default function DraftCard({ draft, user }) {
     return (
         <Link to={`/drafts/${draft._id}`} style={{textDecoration: 'none', color: 'black'}}>
-            <Card>
-                <Card.Title><h1>{draft.name}</h1></Card.Title>
+            <Card className="DraftCard bg-light">
+                <Card.Title><h3>{draft.name}</h3></Card.Title>
                 <Card.Body>
                     <Card.Text>
                         <div><b>Total Score: {draft.draftPicks.reduce((total, player) => total += player.projectedScore, 0).toFixed(2)}</b></div>

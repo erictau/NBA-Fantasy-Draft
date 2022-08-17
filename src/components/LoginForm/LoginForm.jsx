@@ -1,3 +1,4 @@
+import '../../pages/AuthPage/AuthPage.css'
 import { useState } from 'react';
 import * as usersService from '../../utilities/users-service';
 import Button from 'react-bootstrap/Button'
@@ -31,14 +32,14 @@ export default function LoginForm({ setUser }) {
 
   return (
     <div>
-      <div className="container w-25 border p-3">
-        <h1>Log In</h1>
+      <div className="container w-25 p-3 AuthForms">
+        <h3>Log In</h3>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Form.Label>Email</Form.Label>
           <Form.Control type="text" name="email" value={credentials.email} onChange={handleChange} required />
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" name="password" value={credentials.password} onChange={handleChange} required />
-          <Button type="submit">LOG IN</Button>
+          <Button type="submit" className="mt-2">LOG IN</Button>
         </Form>
       </div>
       <p className="error-message">&nbsp;{error}</p>

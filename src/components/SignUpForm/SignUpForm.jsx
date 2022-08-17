@@ -1,3 +1,4 @@
+import '../../pages/AuthPage/AuthPage.css'
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -44,8 +45,8 @@ export default function SignUpForm({ setUser }) {
 
   return (
     <div>
-      <div className="container w-25 border p-3">
-        <h1>Sign Up</h1>
+      <div className="container w-25 mt-3 p-3 AuthForms">
+        <h3>Sign Up</h3>
         <Form autoComplete="off" onSubmit={handleSubmit}>
           <Form.Label>Name</Form.Label>
           <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
@@ -55,7 +56,7 @@ export default function SignUpForm({ setUser }) {
           <Form.Control type="password" name="password" value={formData.password} onChange={handleChange} required />
           <Form.Label>Confirm</Form.Label>
           <Form.Control type="password" name="confirm" value={formData.confirm} onChange={handleChange} required />
-          <Button type="submit" disabled={disable}>SIGN UP</Button>
+          <Button type="submit" disabled={disable} className="mt-2">SIGN UP</Button>
         </Form>
       </div>
       <p className="error-message">&nbsp;{formData.error}</p>

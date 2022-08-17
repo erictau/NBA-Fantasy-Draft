@@ -11,7 +11,7 @@ export default function NavBar({ user, setUser }) {
   }
 
   return (
-    <nav className="NavBar navbar bg-primary text-white">
+    <nav className="NavBar navbar bg-primary text-white mb-3">
       <div className="navbar-left">
         <Link to="" className="btn text-light">
           Home
@@ -20,6 +20,9 @@ export default function NavBar({ user, setUser }) {
         <Link to="/drafts/new" className="btn text-light">
           New Draft
         </Link>
+      </div>
+      <div>
+        <h6 className="m-0">NBA Fantasy Draft</h6>
       </div>
       <div className="navbar-right d-flex align-items-center">
         <span className="p-1 m-1">Welcome, {user.name}</span>
