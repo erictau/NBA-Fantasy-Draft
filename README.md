@@ -5,6 +5,9 @@
 This application is an NBA Fantasy Mock Draft clone. Functionality includes creating a user account, creating or joining a mock draft, setting up a draft scoring system, and drafting players to your mock Fantasy Team! This application uses a 3rd Party API (balldontlie API) to fetch NBA player data. The draft scoring system that the user sets up for a mock draft is used in conjunction with the NBA player data to calculate a projected fantasy score for the upcoming 2022 NBA season. Your fantasy team's projected total score is continuously updated with each player selected, and you can compare total team scores with your friends because multiple users can join and draft together!
 </p>
 
+<p>
+App Link: https://nba-fantasy-draft-et.herokuapp.com/
+</p>
 <img src='./public/img/draftpage.png' width='1000px'>
 
 
@@ -29,10 +32,12 @@ An entity relationship diagram (ERD), wireframes, and a Trello board used as pla
 
 ### Entity Relationship Diagram
 https://lucid.app/lucidchart/fe8fbce1-1ed3-4c3c-8a6b-a7b14c615739/edit?viewport_loc=192%2C25%2C1579%2C835%2C0_0&invitationId=inv_87e5d2f6-cf38-41d4-8a7d-d8332d1c8fdb#
+<br>
 <img src='./public/img/ERD.png' width='1000px'>
 
 ### Wireframes
 https://lucid.app/lucidchart/fe8fbce1-1ed3-4c3c-8a6b-a7b14c615739/edit?viewport_loc=-43%2C36%2C5046%2C2668%2C1reFkgoDHowA&invitationId=inv_87e5d2f6-cf38-41d4-8a7d-d8332d1c8fdb#
+<br>
 <img src='./public/img/ERD.png' width='1000px'>
 <img src='./public/img/login.png' width='1000px'>
 <img src='./public/img/dash.png' width='1000px'>
@@ -41,6 +46,7 @@ https://lucid.app/lucidchart/fe8fbce1-1ed3-4c3c-8a6b-a7b14c615739/edit?viewport_
 
 ### Trello
 https://trello.com/b/lcM3GnQp/project-4-nba-fantasy-draft
+<br>
 <img src='./public/img/trello.png' width='1000px'>
 
 ## Unsolved Problems
