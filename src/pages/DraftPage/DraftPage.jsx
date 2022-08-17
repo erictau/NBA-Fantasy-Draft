@@ -173,8 +173,8 @@ export default function DraftPage({ user }) {
         <div className="container">
             <div>
                 <h4>Draft: {draftData.name}</h4>        
-                {!draftComplete ? draftData.participants.length && <h6>Player {draftData.participants[participantIdx].name} is Up</h6> : <h6>Draft is Complete!</h6>}
-                {draftData.participants.length && <h4>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h4>}
+                {!draftComplete ? draftData.participants.length && <h6>{draftData.participants[participantIdx].name}'s turn</h6> : <h6>Draft is Complete!</h6>}
+                {draftData.participants.length && <h6>Draft Order: {draftData.participants.map((participant, idx) => `${idx + 1}. ${participant.name}`).join(', ')}</h6>}
             </div>
             <div className="row draft-area">
                 <Button variant="primary" className="d-lg-none" onClick={handleShow}>
