@@ -5,6 +5,7 @@ import * as draftsAPI from '../../utilities/drafts-api'
 import * as playersAPI from '../../utilities/players-api'
 import PlayerList from '../../components/PlayerList//PlayerList'
 import PicksList from '../../components/PicksList//PicksList'
+import ChatBox from '../../components/ChatBox/ChatBox'
 import playersThisSeason from '../../seed/playersThisSeason'
 import DraftedPlayersList from '../../components/DraftedPlayersList/DraftedPlayersList'
 import socket from '../../utilities/socket'
@@ -207,6 +208,9 @@ export default function DraftPage({ user }) {
                     <h5>Available Players</h5>
                     <PlayerList remainingPlayers={remainingPlayers} playerPage={playerPage} setPlayerPage={setPlayerPage} draftPlayer={draftPlayer} draftComplete={draftComplete} />
                 </div>
+            </div>
+            <div>
+                <ChatBox chat={draftData.chat}/>
             </div>
         </div>
     )

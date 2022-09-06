@@ -21,3 +21,7 @@ export async function joinDraft(formData) {
     console.log(formData)
     return await sendRequest(`${BASE_URL}/${formData.draftId}/add-participants`, 'POST', formData)
 }
+
+export async function postChatMessage(draftId, message) {
+    return await sendRequest(`${BASE_URL}/${draftId}/post-chat`, 'POST', {message})
+}

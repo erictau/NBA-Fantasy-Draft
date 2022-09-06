@@ -5,7 +5,8 @@ module.exports = {
     create,
     show,
     addPick,
-    addParticipants
+    addParticipants,
+    addChat
 }
 
 async function index(req, res) {
@@ -75,4 +76,18 @@ async function addParticipants(req, res) {
         console.log(err)
         res.status(400).json(err)
     }
+}
+
+async function addChat(req, res) {
+
+    try {
+        const draft = await Draft.findById(req.params.draftId)
+        draft.chat.push({user: req.user._id, message: req.body.message})
+        const updatedDraft = await draft.save()
+        res.json(updatedDraft.chat)
+    } catch(err) {
+        console.log(err)
+        res.status(400).json(err)
+    }
+
 }
