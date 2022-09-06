@@ -1,6 +1,16 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const chatSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    message: String
+}, {
+    timestamps: true
+})
+
 const scoringSchema = new Schema({
     name: String,
     pts: Number,
@@ -34,7 +44,6 @@ const draftPickSchema = new Schema({
 
 const draftSchema = new Schema({
     name: String,
-    // Change this into an array of participants to allow multiple people to draft together. 
     participants: [{
         type: Schema.Types.ObjectId, 
         ref: 'User'
@@ -54,6 +63,7 @@ const draftSchema = new Schema({
     },
     draftPicks: [draftPickSchema],
     numPlayersPerUser: Number,
+    chat: [chatSchema]
 },{
     timestamps: true,
     toJSON: {virtuals: true}
