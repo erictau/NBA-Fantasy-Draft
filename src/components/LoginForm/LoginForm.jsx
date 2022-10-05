@@ -41,8 +41,8 @@ export default function LoginForm({ setUser }) {
           <Form.Control type="password" name="password" value={credentials.password} onChange={handleChange} required />
           <Button type="submit" className="mt-2">LOG IN</Button>
         </Form>
+        <p className="error-message">&nbsp;{error}</p>
       </div>
-      <p className="error-message">&nbsp;{error}</p>
     </div>
   );
 }

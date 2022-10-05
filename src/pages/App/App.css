@@ -1,10 +1,11 @@
 .App {
   text-align: center;
   background-image: url(https://wallpaperaccess.com/full/3369404.jpg);
-  background-repeat: none;
-  background-size:cover;
+  background-repeat: repeat-y;
+  background-size: auto;
   background-position-x: center;
-  height: 100vh;
+  background-color: darkgray;
+  min-height: 100vh;
   color: white;
 }
 
